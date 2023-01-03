@@ -2,6 +2,7 @@ import SwiftUI
 
 struct TitleView: View {
     @Binding var title:BoardTitle
+    @Binding var blackStyle:Bool
     func genColor(r:Double,g:Double,b:Double)->Color{
         return Color(.sRGB,red: r/255.0,green: g/255.0,blue: b/255.0)
     }
@@ -60,6 +61,7 @@ struct TitleView: View {
             HStack{
                 Text(title.ID)
                     .listTitle()
+                    .foregroundColor(blackStyle ? Color.white : Color.black)
                 Spacer()
                 RoundedRectangle(cornerRadius: 20)
                     .fill(Color.gray)
@@ -74,8 +76,10 @@ struct TitleView: View {
                     .overlay(Text(title.name))
                 Spacer()
                 Text(title.popularPost)
+                    .foregroundColor(blackStyle ? Color.white : Color.black)
             }
         }
+            
     }
 }
 extension Text{
@@ -88,6 +92,7 @@ extension Text{
 }
 struct ArticatTitleView:View{
     @Binding var title:ArticleTitle
+    @Binding var blackStyle:Bool
     func genPopular(num:String)->Text{
         if num == "爆"{
             return Text(num)
@@ -108,18 +113,20 @@ struct ArticatTitleView:View{
     var body:some View{
         HStack{
             Rectangle()
-                .fill(Color.white)
+                .fill(blackStyle ? Color.black : Color.white)
                 .frame(width: 30, height: 30)
                 .opacity(0)
                 .overlay(genPopular(num: title.popular))
             VStack(alignment: .leading){
                 Text(title.title)
                     .font(.system(size: 20))
+                    .foregroundColor(blackStyle ? Color.white : Color.black)
                 HStack{
                     Text(title.author)
                         .foregroundColor(Color.gray)
                     Spacer()
                     Text(title.date)
+                        .foregroundColor(blackStyle ? Color.white : Color.black)
                 }
             }
         }

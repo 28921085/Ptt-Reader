@@ -16,9 +16,10 @@ struct HTMLParser{
         //return BoardTitle(name: "1", popular: "2", ID: "3", popularPost: "4")
         return BoardTitle(name: String(tmp[2]), popular: String(tmp[1]), ID: String(tmp[0]), popularPost: String(tmp[3]))
     }
-    static func checkIP(str:String)->Bool{
+    static func checkIP(str:String)->Int{
         var dot=0
         var num=0
+        var word=0
         for i in str{
             if i == "."{
                 dot += 1
@@ -27,13 +28,18 @@ struct HTMLParser{
                 num += 1
             }
             else{
-                return false
+                word += 1
             }
         }
         if num >= 4 && num <= 12 && dot == 3{
-            return true
+            if word == 0{
+                return 1
+            }
+            else{
+                return 2
+            }
         }
-        return false
+        return 0
     }
     static func checkDate(str:String)->Bool{
         var cnt=0
@@ -78,8 +84,32 @@ struct HTMLParser{
                     tp.date += String(content[idx])
                 }
                 else{
-                    if checkIP(str:String(content[idx])){
+                    if checkIP(str:String(content[idx])) == 1{
                         tp.IP = String(content[idx])
+                    }
+                    else if checkIP(str:String(content[idx])) == 2{
+                        var str = Array(String(content[idx]))
+                        var cnt = Int(str.count)
+                        var conv = 0
+                        for i in 1..<cnt{
+                            var tmp=""
+                            var tmp2=""
+                            for j in 0..<i{
+                                tmp += String(str[j])
+                            }
+                            for j in i..<cnt{
+                                tmp2 += String(str[j])
+                            }
+                            if checkIP(str: tmp2) == 1{
+                                tp.IP=tmp2
+                                tp.content+=tmp
+                                conv=1
+                                break
+                            }
+                        }
+                        if conv == 0{
+                            tp.content+=String(content[idx])
+                        }
                     }
                     else if checkDate(str: String(content[idx])){
                         tp.date = String(content[idx])

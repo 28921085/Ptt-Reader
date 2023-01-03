@@ -179,7 +179,7 @@ struct KannaTest: View {
                             i in
                             Text(data.ArticleInfo.content[i])
                         }
-                        ArticleView(Article: data.ArticleInfo)
+                        //ArticleView(Article: data.ArticleInfo)
                     }
                     
                      
